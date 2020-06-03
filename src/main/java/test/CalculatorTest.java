@@ -24,7 +24,14 @@ public class CalculatorTest extends TestCase {
     public  void testSubtract() {
         calculator.add(10);
         calculator.subtract(5);
-        Assert.isTrue(5 == calculator.getResult(), "");
+        Assert.isTrue(5 == calculator.getResult(), "testSubtract is wrong!");
+    }
+
+    public  void testSub() {
+        calculator.add(10);
+        calculator.subtract(5);
+        calculator.add(5);
+        Assert.isTrue(5 == calculator.getResult(), "testSub is wrong!");
     }
 
     @Override

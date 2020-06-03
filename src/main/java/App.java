@@ -28,7 +28,7 @@ public class App {
      * 2.  框架能自动寻找测试用例中以test为开头的方法，调用执行。
      * 3.  支持setUp, tearDown方法
      */
-    public static void main(String[] args) throws GeneralError {
+    public static void main(String[] args) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         System.out.println("Kerwin要搞定Junit!");
 
         // 扫描所有继承了TestCase的类
@@ -42,33 +42,43 @@ public class App {
         Set<Class<? extends TestCase>> classes = reflections.getSubTypesOf(TestCase.class);
         for (Class<? extends TestCase> aclass : classes) {
 
+            // Begin To Test
             System.out.println(MessageFormat.format("Start to test class: {0} ...", aclass.getSimpleName()));
+            print();
             Method method = null;
-            try {
-                TestCase testCase = aclass.newInstance();
 
-                Method setUp    =  aclass.getMethod(TestCase.SET_UP_METHOD_NAME);
-                Method tearDown = aclass.getMethod(TestCase.TEAR_DOWN_METHOD_NAME);
+            // Build Method
+            TestCase testCase = aclass.newInstance();
+            Method setUp      =  aclass.getMethod(TestCase.SET_UP_METHOD_NAME);
+            Method tearDown   = aclass.getMethod(TestCase.TEAR_DOWN_METHOD_NAME);
 
-                // 预先执行方法
-                method = setUp;
-                method.invoke(testCase);
+            // 预先执行方法
+            method = setUp;
+            method.invoke(testCase);
 
-                Method[] methods = aclass.getDeclaredMethods();
-                for (Method m : methods) {
-                    method = m;
-                    if (TestCase.assertMethod(method.getName())) {
+            Method[] methods = aclass.getDeclaredMethods();
+            for (Method m : methods) {
+                method = m;
+                if (TestCase.assertMethod(method.getName())) {
+                    try {
                         method.invoke(testCase);
                         System.out.println(MessageFormat.format("INFO: {0} is pass!", method.getName()));
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        System.out.println(MessageFormat.format("ERROR: {0} is no pass!", method.getName()));
                     }
                 }
-
-                // 结束执行方法
-                method = tearDown;
-                method.invoke(testCase);
-            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                e.printStackTrace();
             }
+
+            // 结束执行方法
+            method = tearDown;
+            method.invoke(testCase);
+            print();
         }
+    }
+
+    private static void print() {
+        System.out.println("------------------------------------------------");
     }
 }
