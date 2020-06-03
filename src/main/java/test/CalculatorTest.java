@@ -2,7 +2,6 @@ package test;
 
 import core.TestCase;
 import demo.Calculator;
-import exception.GeneralException;
 import validated.Assert;
 
 /**
@@ -17,12 +16,12 @@ public class CalculatorTest extends TestCase {
 
     Calculator calculator = null;
 
-    public void testAdd() throws GeneralException {
+    public void testAdd() {
         calculator.add(5);
         Assert.isTrue(5 == calculator.getResult(), "testAdd is wrong!");
     }
 
-    public  void testSubtract() throws GeneralException {
+    public  void testSubtract() {
         calculator.add(10);
         calculator.subtract(5);
         Assert.isTrue(5 == calculator.getResult(), "");

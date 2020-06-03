@@ -1,5 +1,5 @@
 import core.TestCase;
-import exception.GeneralException;
+import error.GeneralError;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -28,7 +28,7 @@ public class App {
      * 2.  框架能自动寻找测试用例中以test为开头的方法，调用执行。
      * 3.  支持setUp, tearDown方法
      */
-    public static void main(String[] args) throws GeneralException {
+    public static void main(String[] args) throws GeneralError {
         System.out.println("Kerwin要搞定Junit!");
 
         // 扫描所有继承了TestCase的类
@@ -66,10 +66,8 @@ public class App {
                 // 结束执行方法
                 method = tearDown;
                 method.invoke(testCase);
-            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                System.out.println(MessageFormat.format("ERROR: {0} can not pass test.", method.getName()));
             }
         }
     }

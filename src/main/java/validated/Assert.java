@@ -1,7 +1,7 @@
 package validated;
 
 
-import exception.GeneralException;
+import error.GeneralError;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,55 +20,55 @@ public abstract class Assert {
 
     public Assert() { }
 
-    public static void state(boolean expression, String message) throws GeneralException {
+    public static void state(boolean expression, String message) throws GeneralError {
         if (!expression) {
-            throw new GeneralException(message);
+            throw new GeneralError(message);
         }
     }
 
-    public static void isTrue(boolean expression, String message) throws GeneralException {
+    public static void isTrue(boolean expression, String message) throws GeneralError {
         state(expression, message);
     }
 
-    public static void isNull( Object object, String message) throws GeneralException{
+    public static void isNull( Object object, String message) throws GeneralError {
         if (object != null) {
-            throw new GeneralException(message);
+            throw new GeneralError(message);
         }
     }
 
-    public static void notNull( Object object, String message) throws GeneralException{
+    public static void notNull( Object object, String message) throws GeneralError {
         if (object == null) {
-            throw new GeneralException(message);
+            throw new GeneralError(message);
         }
     }
 
-    public static void hasLength( String text, String message) throws GeneralException{
+    public static void hasLength( String text, String message) throws GeneralError {
         if (StringUtils.isBlank(text)) {
-            throw new GeneralException(message);
+            throw new GeneralError(message);
         }
     }
 
-    public static void hasText( String text, String message) throws GeneralException{
+    public static void hasText( String text, String message) throws GeneralError {
         if (StringUtils.isBlank(text)) {
-            throw new GeneralException(message);
+            throw new GeneralError(message);
         }
     }
 
-    public static void notEmpty( Object[] array, String message) throws GeneralException {
+    public static void notEmpty( Object[] array, String message) throws GeneralError {
         if (ObjectUtils.isEmpty(array)) {
-            throw new GeneralException(message);
+            throw new GeneralError(message);
         }
     }
 
-    public static void notEmpty(Collection<?> collection, String message) throws GeneralException {
+    public static void notEmpty(Collection<?> collection, String message) throws GeneralError {
         if (collection == null || collection.size() <= 0) {
-            throw new GeneralException(message);
+            throw new GeneralError(message);
         }
     }
 
-    public static void notEmpty( Map<?, ?> map, String message) throws GeneralException {
+    public static void notEmpty( Map<?, ?> map, String message) throws GeneralError {
         if (map == null || map.size() <= 0) {
-            throw new GeneralException(message);
+            throw new GeneralError(message);
         }
     }
 
