@@ -1,5 +1,6 @@
 package test;
 
+import anotation.Test;
 import core.TestCase;
 import demo.EncryptUtil;
 import validated.Assert;
@@ -26,6 +27,7 @@ public class EncryptTest extends TestCase {
 
     }
 
+    @Test
     public void testEncrypt() {
         String condition = "Kerwin 最帅！";
 

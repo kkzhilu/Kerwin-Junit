@@ -1,5 +1,6 @@
 package test;
 
+import anotation.Test;
 import core.TestCase;
 import demo.Calculator;
 import validated.Assert;
@@ -16,11 +17,13 @@ public class CalculatorTest extends TestCase {
 
     Calculator calculator = null;
 
+    @Test
     public void testAdd() {
         calculator.add(5);
         Assert.isTrue(5 == calculator.getResult(), "testAdd is wrong!");
     }
 
+    @Test
     public void testSubtract() {
         calculator.add(10);
         calculator.subtract(5);

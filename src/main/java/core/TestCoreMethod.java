@@ -1,5 +1,6 @@
 package core;
 
+import anotation.Test;
 import validated.Assert;
 
 import java.lang.reflect.InvocationTargetException;
@@ -31,7 +32,7 @@ public class TestCoreMethod {
 
         Method[] methods = aclass.getDeclaredMethods();
         for (Method method : methods) {
-            if (TestCase.assertMethod(method.getName())) {
+            if(method.isAnnotationPresent(Test.class)) {
                 try {
                     method.invoke(testCase);
                     if(Assert.isPass()) {

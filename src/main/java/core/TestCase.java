@@ -20,15 +20,6 @@ public abstract class TestCase {
      */
     public abstract void tearDown();
 
-    /**
-     * 是否执行方法
-     */
-    public static boolean assertMethod(String name) {
-        boolean a = !SET_UP_METHOD_NAME.equals(name);
-        boolean b = !TEAR_DOWN_METHOD_NAME.equals(name);
-        return a && b && name.startsWith("test");
-    }
-
     public static final String SET_UP_METHOD_NAME = "setUp";
 
     public static final String TEAR_DOWN_METHOD_NAME = "tearDown";
