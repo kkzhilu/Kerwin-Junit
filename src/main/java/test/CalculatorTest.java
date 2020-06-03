@@ -21,13 +21,13 @@ public class CalculatorTest extends TestCase {
         Assert.isTrue(5 == calculator.getResult(), "testAdd is wrong!");
     }
 
-    public  void testSubtract() {
+    public void testSubtract() {
         calculator.add(10);
         calculator.subtract(5);
         Assert.isTrue(5 == calculator.getResult(), "testSubtract is wrong!");
     }
 
-    public  void testSub() {
+    public void testSub() {
         calculator.add(10);
         calculator.subtract(5);
         calculator.add(5);

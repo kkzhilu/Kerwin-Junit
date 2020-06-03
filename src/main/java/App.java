@@ -1,8 +1,8 @@
 import core.TestCase;
-import error.GeneralError;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import validated.Assert;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,7 +45,6 @@ public class App {
             // Begin To Test
             System.out.println(MessageFormat.format("Start to test class: {0} ...", aclass.getSimpleName()));
             print();
-            Method method = null;
 
             // Build Method
             TestCase testCase = aclass.newInstance();
@@ -53,27 +52,27 @@ public class App {
             Method tearDown   = aclass.getMethod(TestCase.TEAR_DOWN_METHOD_NAME);
 
             // 预先执行方法
-            method = setUp;
-            method.invoke(testCase);
+            setUp.invoke(testCase);
 
             Method[] methods = aclass.getDeclaredMethods();
-            for (Method m : methods) {
-                method = m;
+            for (Method method : methods) {
                 if (TestCase.assertMethod(method.getName())) {
                     try {
                         method.invoke(testCase);
-                        System.out.println(MessageFormat.format("INFO: {0} is pass!", method.getName()));
-                    } catch (IllegalAccessException | IllegalArgumentException e) {
+                        if(Assert.isPass()) {
+                            System.out.println(MessageFormat.format("INFO: {0} is pass!", method.getName()));
+                        } else {
+                            System.out.println(MessageFormat.format("ERROR: {0} is no pass!", method.getName()));
+                        }
+                    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                        System.out.println(MessageFormat.format("ERROR: {0} happen exception.", method.getName()));
                         e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        System.out.println(MessageFormat.format("ERROR: {0} is no pass!", method.getName()));
                     }
                 }
             }
 
             // 结束执行方法
-            method = tearDown;
-            method.invoke(testCase);
+            tearDown.invoke(testCase);
             print();
         }
     }

@@ -1,7 +1,6 @@
 package validated;
 
 
-import error.GeneralError;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,67 +15,81 @@ import java.util.Map;
  * version:      V1.0
  * ******************************
  */
-public abstract class Assert {
+public class Assert {
 
     public Assert() { }
 
-    public static void state(boolean expression, String message) throws GeneralError {
+    private static boolean FLAG = false;
+
+    private static void init() {
+        FLAG = false;
+    }
+
+    private static void happenError() {
+        FLAG = true;
+    }
+
+    public static boolean isPass() {
+        return !FLAG;
+    }
+
+    public static void state(boolean expression, String message) {
+        init();
         if (!expression) {
-            throw new GeneralError(message);
+            happenError();
         }
     }
 
-    public static void isTrue(boolean expression, String message) throws GeneralError {
+    public static void isTrue(boolean expression, String message) {
         state(expression, message);
     }
 
-    public static void isNull( Object object, String message) throws GeneralError {
+    public static void isNull( Object object, String message) {
+        init();
         if (object != null) {
-            throw new GeneralError(message);
+            happenError();
         }
     }
 
-    public static void notNull( Object object, String message) throws GeneralError {
+    public static void notNull( Object object, String message) {
+        init();
         if (object == null) {
-            throw new GeneralError(message);
+            happenError();
         }
     }
 
-    public static void hasLength( String text, String message) throws GeneralError {
+    public static void hasLength( String text, String message) {
+        init();
         if (StringUtils.isBlank(text)) {
-            throw new GeneralError(message);
+            happenError();
         }
     }
 
-    public static void hasText( String text, String message) throws GeneralError {
+    public static void hasText( String text, String message) {
+        init();
         if (StringUtils.isBlank(text)) {
-            throw new GeneralError(message);
+            happenError();
         }
     }
 
-    public static void notEmpty( Object[] array, String message) throws GeneralError {
+    public static void notEmpty( Object[] array, String message) {
+        init();
         if (ObjectUtils.isEmpty(array)) {
-            throw new GeneralError(message);
+            happenError();
         }
     }
 
-    public static void notEmpty(Collection<?> collection, String message) throws GeneralError {
+    public static void notEmpty(Collection<?> collection, String message) {
+        init();
         if (collection == null || collection.size() <= 0) {
-            throw new GeneralError(message);
+            happenError();
         }
     }
 
-    public static void notEmpty( Map<?, ?> map, String message) throws GeneralError {
+    public static void notEmpty( Map<?, ?> map, String message)  {
+        init();
         if (map == null || map.size() <= 0) {
-            throw new GeneralError(message);
+            happenError();
         }
-    }
-
-    private static boolean endsWithSeparator(String msg) {
-        return msg.endsWith(":") || msg.endsWith(";") || msg.endsWith(",") || msg.endsWith(".");
-    }
-
-    private static String messageWithTypeName(String msg, Object typeName) {
-        return msg + (msg.endsWith(" ") ? "" : ": ") + typeName;
     }
 }
