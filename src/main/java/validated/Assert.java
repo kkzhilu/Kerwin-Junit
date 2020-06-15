@@ -1,8 +1,8 @@
 package validated;
 
 
+import exception.AssertException;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -19,24 +19,9 @@ public class Assert {
 
     public Assert() { }
 
-    private static boolean FLAG = false;
-
-    private static void init() {
-        FLAG = false;
-    }
-
-    private static void happenError() {
-        FLAG = true;
-    }
-
-    public static boolean isPass() {
-        return !FLAG;
-    }
-
     public static void state(boolean expression, String message) {
-        init();
         if (!expression) {
-            happenError();
+            throw new AssertException(msgBuilder(expression, !expression));
         }
     }
 
@@ -44,52 +29,35 @@ public class Assert {
         state(expression, message);
     }
 
-    public static void isNull( Object object, String message) {
-        init();
-        if (object != null) {
-            happenError();
-        }
-    }
-
     public static void notNull( Object object, String message) {
-        init();
         if (object == null) {
-            happenError();
-        }
-    }
-
-    public static void hasLength( String text, String message) {
-        init();
-        if (StringUtils.isBlank(text)) {
-            happenError();
-        }
-    }
-
-    public static void hasText( String text, String message) {
-        init();
-        if (StringUtils.isBlank(text)) {
-            happenError();
+            throw new AssertException(msgBuilder("not null", "null"));
         }
     }
 
     public static void notEmpty( Object[] array, String message) {
-        init();
         if (ObjectUtils.isEmpty(array)) {
-            happenError();
+            throw new AssertException(msgBuilder("not empty", "empty"));
         }
     }
 
     public static void notEmpty(Collection<?> collection, String message) {
-        init();
         if (collection == null || collection.size() <= 0) {
-            happenError();
+            throw new AssertException(msgBuilder("not empty", "empty"));
         }
     }
 
     public static void notEmpty( Map<?, ?> map, String message)  {
-        init();
         if (map == null || map.size() <= 0) {
-            happenError();
+            throw new AssertException(msgBuilder("not empty", "empty"));
         }
+    }
+
+    private static String msgBuilder(Object expect, Object result) {
+        return String.format("expect is %s, result is %s", expect, result);
+    }
+
+    private static void exception(String msg) {
+        throw new AssertException("TestCase Exception: " + msg);
     }
 }

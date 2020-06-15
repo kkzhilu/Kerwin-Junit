@@ -25,9 +25,7 @@ public class App {
      * 2. 测试框架在运行结束以后，可以报告出，有那些测试用例成功，有哪些测试用例失败，对于失败的用例，报告出是Assert失败，还是出现了异常。
      */
     public static void main(String[] args) {
-        System.out.println("Kerwin要搞定Junit!");
-
-        // 扫描所有继承了TestCase的类
+        // 扫描所有继承了TestCase的类 | target/classes 目录下
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.forPackage(""))
                 .filterInputsBy(input -> {
@@ -44,6 +42,6 @@ public class App {
         }
 
         // 测试
-        testSuite.startToTest();
+        testSuite.run();
     }
 }

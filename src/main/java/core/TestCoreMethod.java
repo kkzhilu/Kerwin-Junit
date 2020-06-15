@@ -1,7 +1,7 @@
 package core;
 
 import anotation.Test;
-import validated.Assert;
+import collect.CollectInfo;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,42 +17,37 @@ import java.text.MessageFormat;
  */
 public class TestCoreMethod {
 
-    public static void testClass(Class<? extends TestCase> aclass) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+    public static void startTest(Class<? extends TestCase> aclass) throws IllegalAccessException, InstantiationException, NoSuchMethodException {
         // Begin To Test
+        CollectInfo.addClass(aclass.getName(), aclass);
         System.out.println(MessageFormat.format("Start to test class: {0} ...", aclass.getSimpleName()));
-        print();
 
-        // Build Method
+        // Build newInstance
         TestCase testCase = aclass.newInstance();
-        Method setUp      =  aclass.getMethod(TestCase.SET_UP_METHOD_NAME);
-        Method tearDown   = aclass.getMethod(TestCase.TEAR_DOWN_METHOD_NAME);
 
         // 预先执行方法
-        setUp.invoke(testCase);
+        methodInvoke(testCase, aclass.getMethod(TestCase.SET_UP_METHOD_NAME));
 
         Method[] methods = aclass.getDeclaredMethods();
         for (Method method : methods) {
             if(method.isAnnotationPresent(Test.class)) {
-                try {
-                    method.invoke(testCase);
-                    if(Assert.isPass()) {
-                        System.out.println(MessageFormat.format("INFO: {0} is pass!", method.getName()));
-                    } else {
-                        System.out.println(MessageFormat.format("ERROR: {0} is no pass!", method.getName()));
-                    }
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    System.out.println(MessageFormat.format("ERROR: {0} happen exception.", method.getName()));
-                    e.printStackTrace();
-                }
+                TestMethodInvoke.invoke(method, testCase);
             }
         }
 
         // 结束执行方法
-        tearDown.invoke(testCase);
-        print();
+        methodInvoke(testCase, aclass.getMethod(TestCase.TEAR_DOWN_METHOD_NAME));
     }
 
-    private static void print() {
-        System.out.println("------------------------------------------------");
+    /***
+     * 初始化及清理方法
+     */
+    private static void methodInvoke(TestCase testCase, Method method) {
+        try {
+            method.invoke(testCase);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            System.out.println("方法调用异常：" + method.getDeclaringClass().getName()+"#"+method.getName());
+            e.printStackTrace();
+        }
     }
 }
