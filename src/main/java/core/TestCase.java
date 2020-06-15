@@ -2,7 +2,7 @@ package core;
 
 /**
  * ******************************
- * author：      柯贤铭
+ * author：      Kerwin
  * createTime:   2020/6/3 14:16
  * description:  TestCase 核心类
  * version:      V1.0

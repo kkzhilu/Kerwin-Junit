@@ -2,7 +2,7 @@ package demo;
 
 /**
  * ******************************
- * author：      柯贤铭
+ * author：      Kerwin
  * createTime:   2020/6/3 14:18
  * description:  计算Demo类
  * version:      V1.0
